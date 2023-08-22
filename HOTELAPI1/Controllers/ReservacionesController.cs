@@ -20,6 +20,73 @@ namespace HOTELAPI1.Controllers
         {
             _context = context;
         }
+        // GET: api/Reservaciones
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Reservacion>>> GetReservaciones()
+        {
+            return await _context.Reservaciones.ToListAsync();
+        }
+
+        // GET: api/Reservaciones/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Reservacion>> GetReservacion(int id)
+        {
+            var reservacion = await _context.Reservaciones.FindAsync(id);
+
+            if (reservacion == null)
+            {
+                return NotFound();
+            }
+
+            return reservacion;
+        }
+
+       
+
+        // POST: api/Reservaciones
+        [HttpPost]
+        public async Task<ActionResult<Reservacion>> CreateReservacion(ReservacionDto reservacionDto)
+        {
+            if (reservacionDto.FechaInicio >= reservacionDto.FechaFin)
+            {
+                return BadRequest("La fecha de inicio debe ser anterior a la fecha de fin.");
+            }
+
+            var reservacion = new Reservacion
+            {
+                ClienteId = reservacionDto.ClienteId,
+                PropiedadId = reservacionDto.PropiedadId,
+                FechaInicio = reservacionDto.FechaInicio,
+                FechaFin = reservacionDto.FechaFin,
+                Estado = reservacionDto.Estado
+            };
+
+            _context.Reservaciones.Add(reservacion);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetReservacion", new { id = reservacion.Id }, reservacion);
+        }
+
+        // DELETE: api/Reservaciones/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Reservacion>> DeleteReservacion(int id)
+        {
+            var reservacion = await _context.Reservaciones.FindAsync(id);
+            if (reservacion == null)
+            {
+                return NotFound();
+            }
+
+            _context.Reservaciones.Remove(reservacion);
+            await _context.SaveChangesAsync();
+
+            return reservacion;
+        }
+
+        private bool ReservacionExists(int id)
+        {
+            return _context.Reservaciones.Any(e => e.Id == id);
+        }
 
         [HttpPost("crear")]
         public async Task<IActionResult> CrearReservacion([FromForm] ReservacionDto dto)
