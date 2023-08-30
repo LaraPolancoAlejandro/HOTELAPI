@@ -7,6 +7,9 @@ namespace HOTELAPI1.Dtos
         [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
         public string Nombre { get; set; }
 
+        [Required(ErrorMessage = "El campo Imagen es obligatorio.")]
+        public string Imagen { get; set; }
+
         [Required(ErrorMessage = "El campo Descripción es obligatorio.")]
         [MinLength(100, ErrorMessage = "El campo Descripción debe tener al menos 100 caracteres")]
      
