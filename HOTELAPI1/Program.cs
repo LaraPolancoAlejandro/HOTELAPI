@@ -1,17 +1,22 @@
 using HOTELAPI1;
 using HOTELAPI1.Services;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddTransient<EmailService>();
 
 // Register HotelDbContext
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register MongoDB Client
+builder.Services.AddSingleton<IMongoClient, MongoClient>(
+    _ => new MongoClient(builder.Configuration["MongoDB:ConnectionString"])
+);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
