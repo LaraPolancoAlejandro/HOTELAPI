@@ -42,7 +42,7 @@ public class PropietariosController : ControllerBase
 
     // PUT: api/Propietarios/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdatePropietario(int id, Propietario propietario)
+    public async Task<IActionResult> UpdatePropietario(Guid id, Propietario propietario)
     {
         if (id != propietario.Id)
         {
@@ -96,7 +96,7 @@ public class PropietariosController : ControllerBase
         return propietario;
     }
 
-    private bool PropietarioExists(int id)
+    private bool PropietarioExists(Guid id)
     {
         return _context.Propietarios.Any(e => e.Id == id);
     }

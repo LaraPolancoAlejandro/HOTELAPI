@@ -63,12 +63,12 @@ namespace HOTELAPI1.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Verificar si el propietario está validado
-            var propietario = await _context.Propietarios.FindAsync(dto.PropietarioId);
-            if (propietario == null || !propietario.IsEmailConfirmed)
-            {
-                return BadRequest(new { Message = "La cuenta del propietario debe estar validada para registrar una propiedad." });
-            }
+            //// Verificar si el propietario está validado
+            //var propietario = await _context.Propietarios.FindAsync(dto.PropietarioId);
+            //if (propietario == null || !propietario.IsEmailConfirmed)
+            //{
+            //    return BadRequest(new { Message = "La cuenta del propietario debe estar validada para registrar una propiedad." });
+            //}
 
             // Crear la propiedad
             var propiedad = new Propiedad

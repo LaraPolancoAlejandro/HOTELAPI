@@ -2,7 +2,7 @@
 {
     public class Reservacion
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int ClienteId { get; set; }
         public int PropiedadId { get; set; }
         public DateTime FechaInicio { get; set; }
