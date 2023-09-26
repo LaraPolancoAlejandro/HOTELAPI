@@ -7,6 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20230820181846_BasicModel.cs" />
+    <Compile Remove="Migrations\20230820181846_BasicModel.Designer.cs" />
+    <Compile Remove="Migrations\20230820191018_ClientePasswordChange.cs" />
+    <Compile Remove="Migrations\20230820191018_ClientePasswordChange.Designer.cs" />
+    <Compile Remove="Migrations\20230820191221_PropietarioPasswordChange.cs" />
+    <Compile Remove="Migrations\20230820191221_PropietarioPasswordChange.Designer.cs" />
+    <Compile Remove="Migrations\20230820193544_PropietarioConfirmed.cs" />
+    <Compile Remove="Migrations\20230820193544_PropietarioConfirmed.Designer.cs" />
+    <Compile Remove="Migrations\20230821034153_RemoveComodidadesPropiedad.cs" />
+    <Compile Remove="Migrations\20230821034153_RemoveComodidadesPropiedad.Designer.cs" />
+    <Compile Remove="Migrations\20230821041729_AddTotal.cs" />
+    <Compile Remove="Migrations\20230821041729_AddTotal.Designer.cs" />
+    <Compile Remove="Migrations\20230926154459_Add-ImageField.cs" />
+    <Compile Remove="Migrations\20230926154459_Add-ImageField.Designer.cs" />
+    <Compile Remove="Migrations\20230926164838_GuidInsteadofIntForID.cs" />
+    <Compile Remove="Migrations\20230926164838_GuidInsteadofIntForID.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="4.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">

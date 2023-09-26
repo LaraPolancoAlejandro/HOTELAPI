@@ -52,7 +52,7 @@ namespace HOTELAPI1.Controllers
 
         // PUT: api/Clientes/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(int id, Cliente cliente)
+        public async Task<IActionResult> PutCliente(Guid id, Cliente cliente)
         {
             if (id != cliente.Id)
             {
@@ -114,7 +114,7 @@ namespace HOTELAPI1.Controllers
             return NoContent();
         }
 
-        private bool ClienteExists(int id)
+        private bool ClienteExists(Guid id)
         {
             return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }

@@ -83,10 +83,11 @@ namespace HOTELAPI1.Controllers
             return reservacion;
         }
 
-        private bool ReservacionExists(int id)
+        private bool ReservacionExists(Guid id)
         {
             return _context.Reservaciones.Any(e => e.Id == id);
         }
+
 
         [HttpPost("crear")]
         public async Task<IActionResult> CrearReservacion([FromForm] ReservacionDto dto)
