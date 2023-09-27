@@ -22,7 +22,7 @@ namespace HOTELAPI1.Dtos
         public string Tipo { get; set; }
 
         [Required(ErrorMessage = "El campo PropietarioId es obligatorio.")]
-        public int PropietarioId { get; set; }
+        public Guid PropietarioId { get; set; }
 
         [Required(ErrorMessage = "El campo PrecioPorNoche es obligatorio.")]
         public decimal PrecioPorNoche { get; set; }

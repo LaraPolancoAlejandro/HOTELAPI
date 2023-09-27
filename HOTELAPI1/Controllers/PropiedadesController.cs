@@ -34,7 +34,7 @@ namespace HOTELAPI1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> ObtenerPropiedadPorId(int id)
+        public async Task<IActionResult> ObtenerPropiedadPorId(Guid id)
         {
             try
             {
