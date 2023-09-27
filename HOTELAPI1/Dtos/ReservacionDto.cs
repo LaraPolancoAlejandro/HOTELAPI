@@ -5,9 +5,9 @@ namespace HOTELAPI1.Dtos
     public class ReservacionDto
     {
         [Required]
-        public int ClienteId { get; set; }
+        public Guid ClienteId { get; set; }
         [Required]
-        public int PropiedadId { get; set; }
+        public Guid PropiedadId { get; set; }
         [Required]
         public DateTime FechaInicio { get; set; }
         [Required]
