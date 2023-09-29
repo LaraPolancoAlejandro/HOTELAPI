@@ -96,7 +96,7 @@ namespace HOTELAPI1.Controllers
 
         // DELETE: api/Clientes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCliente(int id)
+        public async Task<IActionResult> DeleteCliente(Guid id)
         {
             if (_context.Clientes == null)
             {
