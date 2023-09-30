@@ -42,7 +42,7 @@ public class PropietariosController : ControllerBase
 
     // PUT: api/Propietarios/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdatePropietario(Guid id, Propietario propietario)
+    public async Task<IActionResult> UpdatePropietario(string id, Propietario propietario)
     {
         if (id != propietario.Id)
         {
@@ -82,7 +82,7 @@ public class PropietariosController : ControllerBase
 
     // DELETE: api/Propietarios/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Propietario>> DeletePropietario(int id)
+    public async Task<ActionResult<Propietario>> DeletePropietario(string id)
     {
         var propietario = await _context.Propietarios.FindAsync(id);
         if (propietario == null)
@@ -96,7 +96,7 @@ public class PropietariosController : ControllerBase
         return propietario;
     }
 
-    private bool PropietarioExists(Guid id)
+    private bool PropietarioExists(string id)
     {
         return _context.Propietarios.Any(e => e.Id == id);
     }
@@ -112,6 +112,7 @@ public class PropietariosController : ControllerBase
         // Crear el propietario
         var propietario = new Propietario
         {
+            Id= dto.Id,
             Nombre = dto.Nombre,
             Apellido = dto.Apellido,
             Email = dto.Email,
@@ -123,29 +124,7 @@ public class PropietariosController : ControllerBase
         _context.Propietarios.Add(propietario);
         await _context.SaveChangesAsync();
 
-        // Genera el enlace de confirmación (esto es solo un ejemplo, deberías generar un enlace seguro)
-        string confirmationLink = $"https://localhost:7043/api/Propietarios/confirm-email?propietarioId={propietario.Id}";
-
-        // Envía el correo electrónico de confirmación
-        await _emailService.SendConfirmationEmailAsync(propietario.Email, confirmationLink);
-
-        return Ok(new { Message = "Registro exitoso, por favor confirma tu correo electrónico." });
-    }
-
-    [HttpGet("confirm-email")]
-    public async Task<IActionResult> ConfirmEmail(int propietarioId)
-    {
-        var propietario = await _context.Propietarios.FindAsync(propietarioId);
-        if (propietario == null)
-        {
-            return NotFound();
-        }
-
-        propietario.IsEmailConfirmed = true;
-        await _context.SaveChangesAsync();
-
-        var htmlContent = "<html><body><h1>Tu email fue confirmado con exito, ya puedes publicar en la aplicación.</h1></body></html>";
-        return Content(htmlContent, "text/html");
+        return Ok(new { Message = "Registro exitoso, ya puedes publicar tus propiedades!" });
     }
 }
 

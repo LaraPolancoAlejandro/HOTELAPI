@@ -34,7 +34,7 @@ namespace HOTELAPI1.Controllers
 
         // GET: api/Clientes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cliente>> GetCliente(int id)
+        public async Task<ActionResult<Cliente>> GetCliente(string id)
         {
             if (_context.Clientes == null)
             {
@@ -52,7 +52,7 @@ namespace HOTELAPI1.Controllers
 
         // PUT: api/Clientes/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(Guid id, Cliente cliente)
+        public async Task<IActionResult> PutCliente(string id, Cliente cliente)
         {
             if (id != cliente.Id)
             {
@@ -96,7 +96,7 @@ namespace HOTELAPI1.Controllers
 
         // DELETE: api/Clientes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCliente(Guid id)
+        public async Task<IActionResult> DeleteCliente(string id)
         {
             if (_context.Clientes == null)
             {
@@ -114,7 +114,7 @@ namespace HOTELAPI1.Controllers
             return NoContent();
         }
 
-        private bool ClienteExists(Guid id)
+        private bool ClienteExists(string id)
         {
             return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
@@ -131,6 +131,7 @@ namespace HOTELAPI1.Controllers
 
             var cliente = new Cliente
             {
+                Id = clienteDto.Id,
                 Nombre = clienteDto.Nombre,
                 Apellido = clienteDto.Apellido,
                 Email = clienteDto.Email,

@@ -5,6 +5,8 @@ namespace HOTELAPI1.Dtos
     public class PropietarioRegistroDto
     {
         [Required]
+        public string Id { get; set; }
+        [Required]
         public string Nombre { get; set; }
         [Required]
         public string Apellido { get; set; }
