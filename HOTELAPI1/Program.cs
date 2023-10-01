@@ -31,7 +31,7 @@ var app = builder.Build();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
@@ -45,4 +45,5 @@ app.UseCors(builder =>
 
 app.MapControllers();
 
-app.Run();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Run($"http://*:{port}/");
