@@ -136,7 +136,6 @@ namespace HOTELAPI1.Controllers
                 Apellido = clienteDto.Apellido,
                 Email = clienteDto.Email,
                 PhoneNumber = clienteDto.PhoneNumber,
-                Password = clienteDto.Password
             };
 
             _context.Clientes.Add(cliente);

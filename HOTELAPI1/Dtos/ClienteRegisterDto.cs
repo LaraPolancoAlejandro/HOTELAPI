@@ -13,11 +13,6 @@ namespace HOTELAPI1.Dtos
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
-        [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres.")]
-        [RegularExpression(@"^(?=.*[A-Z]).+$", ErrorMessage = "La contraseña debe contener al menos una letra mayúscula.")]
-        public string Password { get; set; }
-        [Required]
         [Phone]
         public string PhoneNumber { get; set; }
     }
