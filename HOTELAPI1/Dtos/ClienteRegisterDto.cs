@@ -13,6 +13,7 @@ namespace HOTELAPI1.Dtos
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        [Required]
         [Phone]
         public string PhoneNumber { get; set; }
     }

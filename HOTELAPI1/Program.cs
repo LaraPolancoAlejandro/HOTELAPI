@@ -7,7 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddTransient<EmailService>();
+//builder.Services.AddTransient<EmailService>(); // Comentado ya que parece que no lo necesitas ahora
+builder.Services.AddTransient<ComentarioService>();
+builder.Services.AddTransient<PropiedadService>();
 
 // Register HotelDbContext
 builder.Services.AddDbContext<HotelDbContext>(options =>
