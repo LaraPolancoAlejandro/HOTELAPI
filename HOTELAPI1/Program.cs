@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 //builder.Services.AddTransient<EmailService>(); // Comentado ya que parece que no lo necesitas ahora
 builder.Services.AddTransient<ComentarioService>();
 builder.Services.AddTransient<PropiedadService>();
+builder.Services.AddTransient<ClienteService>();
 
 // Register HotelDbContext
 builder.Services.AddDbContext<HotelDbContext>(options =>

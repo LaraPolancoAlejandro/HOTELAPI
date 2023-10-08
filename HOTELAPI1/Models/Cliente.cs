@@ -10,7 +10,6 @@ namespace HOTELAPI1.Models
         public string Apellido { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public DateTime FechaRegistro { get; set; }
     }
-
-
 }

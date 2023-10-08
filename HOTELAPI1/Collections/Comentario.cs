@@ -10,5 +10,4 @@ namespace HOTELAPI1.Collections
         public Guid PropiedadId { get; set; }
         public DateTime Fecha { get; set; } // Fecha en que se hizo el comentario
     }
-
 }

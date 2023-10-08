@@ -12,6 +12,4 @@
         public decimal PrecioPorNoche { get; set; }
         public int NumeroDeHabitaciones { get; set; }
     }
-
-
 }
