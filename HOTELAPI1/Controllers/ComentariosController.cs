@@ -20,7 +20,6 @@ namespace HOTELAPI1.Controllers
             _propiedadService = propiedadService; // Asigna el servicio inyectado a la variable de la clase
         }
 
-
         [HttpPost]
         public async Task<IActionResult> CreateComentario([FromBody] Comentario comentario)
         {
@@ -40,7 +39,6 @@ namespace HOTELAPI1.Controllers
 
             return CreatedAtRoute("GetComentario", new { id = comentario.Id.ToString() }, comentario);
         }
-
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateComentario(string id, [FromBody] Comentario comentario)
@@ -68,6 +66,7 @@ namespace HOTELAPI1.Controllers
 
             return NoContent(); // Retorna un 204 No Content, que es una práctica común después de un DELETE exitoso.
         }
+
         [HttpGet("{id}", Name = "GetComentario")]
         public async Task<ActionResult<Comentario>> GetComentario(ObjectId id)
         {
@@ -81,6 +80,7 @@ namespace HOTELAPI1.Controllers
             }
             return Ok(comentario);
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Comentario>>> GetComentarios()
         {
@@ -88,7 +88,45 @@ namespace HOTELAPI1.Controllers
             return Ok(comentarios);
         }
 
+        [HttpGet("ByPropiedad/{propiedadId}")]
+        public async Task<ActionResult<IEnumerable<Comentario>>> GetComentariosByPropiedadId(
+        Guid propiedadId,
+        [FromQuery] int? pageNumber = null,
+        [FromQuery] int? pageSize = null)
+        {
+            var comentarios = await _comentarioService.GetComentariosByPropiedadId(propiedadId, pageNumber, pageSize);
+            if (comentarios == null || !comentarios.Any())
+            {
+                return NotFound();
+            }
+            return Ok(comentarios);
+        }
 
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            // Verificar si el archivo es nulo
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is not selected");
+            }
+
+            // Leer el archivo y convertirlo a string
+            using var reader = new StreamReader(file.OpenReadStream());
+            var fileContent = await reader.ReadToEndAsync();
+
+            // Insertar los datos en la base de datos
+            try
+            {
+                await _comentarioService.InsertDataFromJsonAsync(fileContent);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred while importing data: {ex.Message}");
+            }
+
+            return Ok("Data inserted successfully!");
+        }
 
     }
 }

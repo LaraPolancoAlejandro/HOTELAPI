@@ -16,5 +16,7 @@ namespace HOTELAPI1.Dtos
         [Required]
         [Phone]
         public string PhoneNumber { get; set; }
+        [Required]
+        public DateTime FechaRegistro { get; set; }
     }
 }
