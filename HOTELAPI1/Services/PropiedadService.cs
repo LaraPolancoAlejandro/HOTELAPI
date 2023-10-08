@@ -2,10 +2,11 @@
 using HOTELAPI1.Models; // Asegúrate de usar tu espacio de nombres correcto
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using HOTELAPI1.Abstract;
 
 namespace HOTELAPI1.Services
 {
-    public class PropiedadService
+    public class PropiedadService : IPropiedadService
     {
         private readonly HotelDbContext _context;
 

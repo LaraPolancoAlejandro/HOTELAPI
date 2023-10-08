@@ -2,6 +2,7 @@ using HOTELAPI1;
 using HOTELAPI1.Services;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
+using HOTELAPI1.Abstract;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 //builder.Services.AddTransient<EmailService>(); // Comentado ya que parece que no lo necesitas ahora
 builder.Services.AddTransient<ComentarioService>();
-builder.Services.AddTransient<PropiedadService>();
+builder.Services.AddTransient<IPropiedadService, PropiedadService>();
 builder.Services.AddTransient<ClienteService>();
 
 // Register HotelDbContext

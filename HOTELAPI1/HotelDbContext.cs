@@ -14,6 +14,9 @@ namespace HOTELAPI1
             : base(options)
         {
         }
+        public HotelDbContext()
+        {
+        }
         public class HotelDbContextFactory : IDesignTimeDbContextFactory<HotelDbContext>
         {
             public HotelDbContext CreateDbContext(string[] args)
@@ -31,7 +34,7 @@ namespace HOTELAPI1
             }
         }
         public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Propiedad> Propiedades { get; set; }
+        public virtual DbSet<Propiedad> Propiedades { get; set; }
         public DbSet<Propietario> Propietarios { get; set; }
         public DbSet<Reservacion> Reservaciones { get; set; }
 

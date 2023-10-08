@@ -9,6 +9,7 @@ using HOTELAPI1.Models;
 using HOTELAPI1.Dtos;
 using HOTELAPI1.Services;
 using Microsoft.EntityFrameworkCore.Metadata;
+using HOTELAPI1.Abstract;
 
 namespace HOTELAPI1.Controllers
 {
@@ -17,8 +18,8 @@ namespace HOTELAPI1.Controllers
     public class PropiedadesController : ControllerBase
     {
         private readonly HotelDbContext _context;
-        private readonly PropiedadService _service;
-        public PropiedadesController(HotelDbContext context, PropiedadService service)
+        private readonly IPropiedadService _service;
+        public PropiedadesController(HotelDbContext context, IPropiedadService service)
         {
             _service = service;
             _context = context;
@@ -122,12 +123,12 @@ namespace HOTELAPI1.Controllers
                 return BadRequest(ModelState);
             }
 
-            //// Verificar si el propietario está validado
-            //var propietario = await _context.Propietarios.FindAsync(dto.PropietarioId);
-            //if (propietario == null || !propietario.IsEmailConfirmed)
-            //{
-            //    return BadRequest(new { Message = "La cuenta del propietario debe estar validada para registrar una propiedad." });
-            //}
+            // Verificar si el propietario está validado
+            var propietario = await _context.Propietarios.FindAsync(dto.PropietarioId);
+            if (propietario == null )
+            {
+                return BadRequest(new { Message = "Cuenta no encontrada." });
+            }
 
             // Crear la propiedad
             var propiedad = new Propiedad
