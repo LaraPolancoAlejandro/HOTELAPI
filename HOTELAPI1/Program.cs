@@ -12,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<ComentarioService>();
 builder.Services.AddTransient<IPropiedadService, PropiedadService>();
 builder.Services.AddTransient<ClienteService>();
+builder.Services.AddTransient<ReservacionService>();
 
 // Register HotelDbContext
 builder.Services.AddDbContext<HotelDbContext>(options =>
