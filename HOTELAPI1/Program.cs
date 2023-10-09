@@ -19,12 +19,12 @@ builder.Services.AddTransient<ReservacionService>();
 builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection("ApplicationSettings"));
 
 // Register HotelDbContext
-var defaultConnection = Environment.GetEnvironmentVariable("DEFAULT_CONNECTION_STRING", EnvironmentVariableTarget.User);
+var defaultConnection = Environment.GetEnvironmentVariable("DEFAULT_CONNECTION_STRING");
 builder.Services.AddDbContext<HotelDbContext>(options =>
     options.UseSqlServer(defaultConnection));
 
 // Register MongoDB Client
-var mongoConnectionString = Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING", EnvironmentVariableTarget.User);
+var mongoConnectionString = Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING");
 builder.Services.AddSingleton<IMongoClient, MongoClient>(
     _ => new MongoClient(mongoConnectionString)
 );
