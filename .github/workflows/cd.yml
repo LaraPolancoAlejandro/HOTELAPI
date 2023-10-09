@@ -18,10 +18,10 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     
-    - name: Build and push Docker image
+    - name: Build, tag, and push Docker image
       run: |
-        docker build -t myapp .
-        docker tag myapp:latest myrepo/myapp:latest
-        docker push myrepo/myapp:latest
+        docker build -t bookmystay .
+        docker tag bookmystay:latest alejandrolarapolanco/bookmystay:latest
+        docker push alejandrolarapolanco/bookmystay:latest
     
 
