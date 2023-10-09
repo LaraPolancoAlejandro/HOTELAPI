@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
-
+using HOTELAPI1.Services;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace HOTELAPI1.Controllers
 {
@@ -15,9 +16,10 @@ namespace HOTELAPI1.Controllers
     public class ReservacionesController : ControllerBase
     {
         private readonly HotelDbContext _context;
-
-        public ReservacionesController(HotelDbContext context)
+        private readonly ReservacionService _service;
+        public ReservacionesController(HotelDbContext context, ReservacionService service)
         {
+            _service = service;
             _context = context;
         }
         // GET: api/Reservaciones
@@ -83,12 +85,6 @@ namespace HOTELAPI1.Controllers
             return reservacion;
         }
 
-        private bool ReservacionExists(Guid id)
-        {
-            return _context.Reservaciones.Any(e => e.Id == id);
-        }
-
-
         [HttpPost("crear")]
         public async Task<IActionResult> CrearReservacion([FromForm] ReservacionDto dto)
         {
@@ -132,6 +128,55 @@ namespace HOTELAPI1.Controllers
 
             return Ok(new { Message = "Reservación creada con éxito.", ReservacionId = reservacion.Id });
         }
+
+        // GET: api/Reservaciones/Usuario/{usuarioId}
+        [HttpGet("Usuario/{usuarioId}")]
+        public async Task<ActionResult<IEnumerable<Reservacion>>> GetReservacionesByUsuarioId(string usuarioId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            // Validar si el usuario existe
+            var usuario = await _context.Clientes.FindAsync(usuarioId);
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+
+            // Obtener las reservaciones del usuario con paginación
+            var reservaciones = await _context.Reservaciones
+                .Where(r => r.ClienteId == usuarioId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Obtener el total de reservaciones para el usuario
+            var totalReservaciones = await _context.Reservaciones.CountAsync(r => r.ClienteId == usuarioId);
+
+            // Configurar la paginación en los headers de la respuesta
+            Response.Headers.Add("X-Total-Count", totalReservaciones.ToString());
+            Response.Headers.Add("X-Page-Number", pageNumber.ToString());
+            Response.Headers.Add("X-Page-Size", pageSize.ToString());
+
+            // Retornar las reservaciones
+            return Ok(reservaciones);
+        }
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            // Verificar si el archivo es nulo
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is not selected");
+            }
+
+            // Leer el archivo y convertirlo a string
+            using var reader = new StreamReader(file.OpenReadStream());
+            var fileContent = await reader.ReadToEndAsync();
+
+            // Insertar los datos en la base de datos
+            await _service.InsertDataFromJsonAsync(fileContent);
+
+            return Ok("Data inserted successfully!");
+        }
+
     }
 }
     
