@@ -53,4 +53,4 @@ app.UseCors(builder =>
 app.MapControllers();
 
 //var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Run($"http://*:{options.Port}/");
+app.Run($"http://*:{8080}/");
