@@ -26,4 +26,9 @@ RUN dotnet publish "HOTELAPI1.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Variables de entorno (Establece estas variables en tu entorno de producción)
+ENV DEFAULT_CONNECTION_STRING=your_default_connection_string_here
+ENV MONGO_CONNECTION_STRING=your_mongo_connection_string_here
+
 ENTRYPOINT ["dotnet", "HOTELAPI1.dll"]

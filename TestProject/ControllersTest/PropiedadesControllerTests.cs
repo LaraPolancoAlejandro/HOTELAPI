@@ -42,8 +42,6 @@ namespace TestProject.ControllersTest
             Assert.Equal("Test Propiedad", returnValue.Nombre);
         }
 
-
-
         [Fact]
         public async Task GetPropiedad_ReturnsNotFound_WhenPropiedadDoesNotExist()
         {

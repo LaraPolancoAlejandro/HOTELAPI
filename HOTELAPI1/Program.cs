@@ -3,40 +3,42 @@ using HOTELAPI1.Services;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using HOTELAPI1.Abstract;
+using HOTELAPI1.Models;
+using Amazon.Util.Internal.PlatformServices;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-//builder.Services.AddTransient<EmailService>(); // Comentado ya que parece que no lo necesitas ahora
+builder.Services.AddHostedService<BackGroundWorker>();
 builder.Services.AddTransient<ComentarioService>();
 builder.Services.AddTransient<IPropiedadService, PropiedadService>();
 builder.Services.AddTransient<ClienteService>();
 builder.Services.AddTransient<ReservacionService>();
+builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection("ApplicationSettings"));
 
 // Register HotelDbContext
+var defaultConnection = Environment.GetEnvironmentVariable("DEFAULT_CONNECTION_STRING", EnvironmentVariableTarget.User);
 builder.Services.AddDbContext<HotelDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(defaultConnection));
 
 // Register MongoDB Client
+var mongoConnectionString = Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING", EnvironmentVariableTarget.User);
 builder.Services.AddSingleton<IMongoClient, MongoClient>(
-    _ => new MongoClient(builder.Configuration["MongoDB:ConnectionString"])
+    _ => new MongoClient(mongoConnectionString)
 );
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+var options = new AppSettings();
+app.Configuration.GetSection("ApplicationSettings").Bind(options);
 
-//app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
@@ -50,5 +52,5 @@ app.UseCors(builder =>
 
 app.MapControllers();
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Run($"http://*:{port}/");
+//var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Run($"http://*:{options.Port}/");
