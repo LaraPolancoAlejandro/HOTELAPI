@@ -43,7 +43,7 @@ namespace HOTELAPI1.Controllers
             return reservacion;
         }
 
-       
+
 
         // POST: api/Reservaciones
         [HttpPost]
@@ -52,6 +52,20 @@ namespace HOTELAPI1.Controllers
             if (reservacionDto.FechaInicio >= reservacionDto.FechaFin)
             {
                 return BadRequest("La fecha de inicio debe ser anterior a la fecha de fin.");
+            }
+
+            // Verificar si ya existe una reservación que se superponga con las fechas especificadas
+            var overlappingReservacion = await _context.Reservaciones
+                .Where(r => r.PropiedadId == reservacionDto.PropiedadId)
+                .Where(r =>
+                    (reservacionDto.FechaInicio >= r.FechaInicio && reservacionDto.FechaInicio <= r.FechaFin) ||
+                    (reservacionDto.FechaFin >= r.FechaInicio && reservacionDto.FechaFin <= r.FechaFin) ||
+                    (reservacionDto.FechaInicio <= r.FechaInicio && reservacionDto.FechaFin >= r.FechaFin))
+                .FirstOrDefaultAsync();
+
+            if (overlappingReservacion != null)
+            {
+                return BadRequest("Ya existe una reservación que se superpone con las fechas especificadas.");
             }
 
             var reservacion = new Reservacion
@@ -69,9 +83,10 @@ namespace HOTELAPI1.Controllers
             return CreatedAtAction("GetReservacion", new { id = reservacion.Id }, reservacion);
         }
 
+
         // DELETE: api/Reservaciones/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Reservacion>> DeleteReservacion(int id)
+        public async Task<ActionResult<Reservacion>> DeleteReservacion(Guid id)
         {
             var reservacion = await _context.Reservaciones.FindAsync(id);
             if (reservacion == null)
@@ -158,6 +173,54 @@ namespace HOTELAPI1.Controllers
             // Retornar las reservaciones
             return Ok(reservaciones);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateReservacion(Guid id, Reservacion updatedReservacion)
+        {
+            try
+            {
+                if (updatedReservacion.FechaInicio >= updatedReservacion.FechaFin)
+                {
+                    return BadRequest("La fecha de inicio debe ser anterior a la fecha final.");
+                }
+
+                // Obtener la propiedad por su ID
+                var propiedad = await _context.Propiedades.FindAsync(updatedReservacion.PropiedadId);
+                if (propiedad == null)
+                {
+                    // Cambiar el estado de la reservación a "Eliminado"
+                    var reservacion = await _context.Reservaciones.FindAsync(id);
+                    if (reservacion != null)
+                    {
+                        reservacion.Estado = "Eliminado";
+                        await _context.SaveChangesAsync();
+                    }
+                    return Ok(new { Message = "La propiedad no existe o ha sido eliminada. La reservación ha sido marcada como 'Eliminado'." });
+                }
+
+                // Calcular la duración de la estancia con las nuevas fechas
+                var duracionEstancia = (updatedReservacion.FechaFin - updatedReservacion.FechaInicio).Days;
+
+                // Calcular el nuevo total con las nuevas fechas
+                var total = duracionEstancia * propiedad.PrecioPorNoche;
+
+                // Actualizar el total de la reservación
+                updatedReservacion.Total = total;
+
+                var result = await _service.UpdateReservacionAsync(id, updatedReservacion);
+                if (!result)
+                {
+                    return NotFound(new { Message = "Reservación no encontrada" });
+                }
+                return Ok(new { Message = "Reservación actualizada con éxito" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+
+
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {

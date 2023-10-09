@@ -92,7 +92,6 @@ namespace HOTELAPI1.Controllers
             return Ok(propiedades);
         }
 
-
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerPropiedadPorId(Guid id)
         {
@@ -112,7 +111,6 @@ namespace HOTELAPI1.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener la propiedad.");
             }
         }
-
 
         [HttpPost("registrar-propiedad")]
         public async Task<IActionResult> RegistrarPropiedad([FromForm] PropiedadRegistroDto dto)
@@ -177,5 +175,30 @@ namespace HOTELAPI1.Controllers
                                       .ToListAsync();
             return Ok(tipos);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePropiedad(Guid id)
+        {
+            try
+            {
+                // Buscar la propiedad por ID
+                var propiedad = await _context.Propiedades.FindAsync(id);
+                if (propiedad == null)
+                {
+                    return NotFound(new { Message = "Propiedad no encontrada" });
+                }
+
+                // Eliminar la propiedad
+                _context.Propiedades.Remove(propiedad);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "Propiedad eliminada con éxito" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = ex.Message });
+            }
+        }
+
     }
 }
