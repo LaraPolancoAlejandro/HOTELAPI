@@ -11,11 +11,21 @@ on:
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    
-    - name: Build and test Docker image
-      run: |
-        docker build -t myapp .
-        docker run myapp dotnet test
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'  # Ajusta esta línea a la versión de .NET que estás utilizando
+      
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
