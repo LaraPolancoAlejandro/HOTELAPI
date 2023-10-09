@@ -4,6 +4,7 @@ using HOTELAPI1.Services;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using System.Security.Claims;
+using HOTELAPI1.Abstract;
 
 namespace HOTELAPI1.Controllers
 {
@@ -12,9 +13,9 @@ namespace HOTELAPI1.Controllers
     public class ComentariosController : ControllerBase
     {
         private readonly ComentarioService _comentarioService;
-        private readonly PropiedadService _propiedadService; // Asegúrate de tener un servicio similar
+        private readonly IPropiedadService _propiedadService; // Asegúrate de tener un servicio similar
 
-        public ComentariosController(ComentarioService comentarioService, PropiedadService propiedadService) // Inyecta aquí
+        public ComentariosController(ComentarioService comentarioService, IPropiedadService propiedadService) // Inyecta aquí
         {
             _comentarioService = comentarioService;
             _propiedadService = propiedadService; // Asigna el servicio inyectado a la variable de la clase
