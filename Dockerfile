@@ -28,7 +28,8 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 # Variables de entorno (Establece estas variables en tu entorno de producción)
-ENV DEFAULT_CONNECTION_STRING=Server=tcp:myapis.database.windows.net,1433;Initial Catalog=BDTDSH;Persist Security Info=False;User ID=AlejandroLara;Password=Plomo1106231AZ!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
-ENV MONGO_CONNECTION_STRING=mongodb+srv://Test:1oEDFCRcL0oRZGlt@cluster0.oqicaw7.mongodb.net/
+ENV DEFAULT_CONNECTION_STRING="Server=tcp:myapis.database.windows.net,1433;Initial Catalog=BDTDSH;Persist Security Info=False;User ID=AlejandroLara;Password=Plomo1106231AZ!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+ENV MONGO_CONNECTION_STRING="mongodb+srv://Test:1oEDFCRcL0oRZGlt@cluster0.oqicaw7.mongodb.net/"
+
 
 ENTRYPOINT ["dotnet", "HOTELAPI1.dll"]
