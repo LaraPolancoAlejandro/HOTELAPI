@@ -4,16 +4,22 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using HOTELAPI1.Abstract;
 
 namespace HOTELAPI1.Services
 {
-    public class ClienteService
+    public class ClienteService : IClienteService
     {
         private readonly HotelDbContext _context;
 
         public ClienteService(HotelDbContext context)
         {
             _context = context;
+        }
+        public async Task<Cliente> GetClienteById(string clienteId)
+        {
+            // Implementación para obtener un cliente por ID
+            return await _context.Clientes.FindAsync(clienteId);
         }
 
         public async Task InsertDataFromJsonAsync(string jsonData)

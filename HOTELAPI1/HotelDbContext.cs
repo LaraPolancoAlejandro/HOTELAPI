@@ -33,7 +33,7 @@ namespace HOTELAPI1
                 return new HotelDbContext(builder.Options);
             }
         }
-        public DbSet<Cliente> Clientes { get; set; }
+        public virtual DbSet<Cliente> Clientes { get; set; }
         public virtual DbSet<Propiedad> Propiedades { get; set; }
         public DbSet<Propietario> Propietarios { get; set; }
         public DbSet<Reservacion> Reservaciones { get; set; }

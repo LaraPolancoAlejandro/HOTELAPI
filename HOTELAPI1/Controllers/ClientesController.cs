@@ -9,6 +9,7 @@ using HOTELAPI1;
 using HOTELAPI1.Models;
 using HOTELAPI1.Dtos;
 using HOTELAPI1.Services;
+using HOTELAPI1.Abstract;
 
 namespace HOTELAPI1.Controllers
 {
@@ -17,11 +18,13 @@ namespace HOTELAPI1.Controllers
     public class ClientesController : ControllerBase
     {
         private readonly HotelDbContext _context;
-        private readonly ClienteService _service;
-        public ClientesController(HotelDbContext context, ClienteService service)
+        private readonly IClienteService _service;
+        private readonly ILogger<ClientesController> _logger;
+        public ClientesController(HotelDbContext context, IClienteService service, ILogger<ClientesController> logger)
         {
             _service = service;
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Clientes
@@ -66,19 +69,20 @@ namespace HOTELAPI1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(string id)
         {
-            if (_context.Clientes == null)
-            {
-                return NotFound();
-            }
-            var cliente = await _context.Clientes.FindAsync(id);
+            _logger.LogInformation($"Getting client with ID: {id}");
+            var cliente = await _service.GetClienteById(id);
 
             if (cliente == null)
             {
+                _logger.LogWarning($"No client found with ID: {id}");
                 return NotFound();
             }
 
-            return cliente;
+            _logger.LogInformation($"Client found: {cliente.Nombre}");
+            return Ok(cliente);
         }
+
+
 
         // PUT: api/Clientes/5
         [HttpPut("{id}")]
