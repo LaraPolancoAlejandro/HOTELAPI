@@ -63,7 +63,5 @@ namespace TestProject.ControllersTest
             // Assert
             Assert.IsType<NotFoundResult>(result);
         }
-
-
     }
 }

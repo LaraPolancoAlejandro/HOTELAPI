@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddHostedService<BackGroundWorker>();
 builder.Services.AddTransient<ComentarioService>();
 builder.Services.AddTransient<IPropiedadService, PropiedadService>();
-builder.Services.AddTransient<ClienteService>();
+builder.Services.AddTransient<IClienteService, ClienteService>();
 builder.Services.AddTransient<ReservacionService>();
 builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection("ApplicationSettings"));
 

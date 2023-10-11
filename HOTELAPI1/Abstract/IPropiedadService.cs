@@ -8,5 +8,4 @@ namespace HOTELAPI1.Abstract
         Task InsertDataFromJsonAsync(string jsonData);
         // Otros métodos que tu servicio implementa...
     }
-
 }
