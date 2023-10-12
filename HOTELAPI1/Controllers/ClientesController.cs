@@ -170,6 +170,7 @@ namespace HOTELAPI1.Controllers
                 Apellido = clienteDto.Apellido,
                 Email = clienteDto.Email,
                 PhoneNumber = clienteDto.PhoneNumber,
+                FechaRegistro = DateTime.Now
             };
 
             _context.Clientes.Add(cliente);
