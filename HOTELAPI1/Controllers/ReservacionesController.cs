@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using HOTELAPI1.Services;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Humanizer;
 
 namespace HOTELAPI1.Controllers
 {
@@ -67,15 +68,28 @@ namespace HOTELAPI1.Controllers
             {
                 return BadRequest("Ya existe una reservación que se superpone con las fechas especificadas.");
             }
+            var propiedad = await _context.Propiedades.FindAsync(reservacionDto.PropiedadId);
+            if (propiedad == null)
+            {
+                return NotFound("Propiedad no encontrada");
+            }
 
+            var duracionEstancia = (reservacionDto.FechaFin - reservacionDto.FechaInicio).Days;
+
+            // Calcular el total
+            var total = duracionEstancia * propiedad.PrecioPorNoche;
+
+            // Crear la reservación
             var reservacion = new Reservacion
             {
                 ClienteId = reservacionDto.ClienteId,
                 PropiedadId = reservacionDto.PropiedadId,
                 FechaInicio = reservacionDto.FechaInicio,
                 FechaFin = reservacionDto.FechaFin,
-                Estado = reservacionDto.Estado
+                Estado = reservacionDto.Estado,
+                Total = total
             };
+
 
             _context.Reservaciones.Add(reservacion);
             await _context.SaveChangesAsync();
