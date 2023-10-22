@@ -27,7 +27,7 @@ namespace HOTELAPI1
                     .Build();
 
                 var builder = new DbContextOptionsBuilder<HotelDbContext>();
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                var connectionString = Environment.GetEnvironmentVariable("DEFAULT_CONNECTION_STRING");
                 builder.UseSqlServer(connectionString);
 
                 return new HotelDbContext(builder.Options);
